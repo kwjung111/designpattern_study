@@ -21,11 +21,11 @@ class Controller{
         this.saveFunc = saveFunc
     }
     jump(args){
-        this.controller.jumpFunc(args)
+        this.jumpFunc(args)
     }
     save(date,args){
-        this.controller.saveData.push(date)
-        this.controller.saveFunc(args)
+        this.saveData.push(date)
+        this.saveFunc(args)
     }
     
 
@@ -42,15 +42,16 @@ class Command{
     }
 }
 
-function playerjump(args){ 
+let playerjump = (args) => { 
     console.log(`jumped : height ${args}`)}
-function playersave(){ 
+let playersave = () => { 
     let curDate = new Date()
     console.log(`saved at ${curDate}`)}
 
 playerController = new Controller(() =>{playerjump(10)},playersave)
-jumpCommand = new Command(playerController,playerController.jump)
-saveCommand = new Command(playerController,playerController.save)
+jumpCommand = new Command(playerController,((args) => playerController.jump(args)))
+saveCommand = new Command(playerController,(() => playerController.save()))
+//화살표 함수로 this 바인딩 방지
 playerInputHandler = new InputHandler(jumpCommand,saveCommand) //명령을 갈아끼우기 가능
 playerInputHandler.keyPressed('space')
 playerInputHandler.keyPressed('enter')
